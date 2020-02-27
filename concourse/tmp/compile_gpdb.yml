@@ -11,7 +11,7 @@ inputs:
 outputs:
   - name: gpdb_artifacts
 run:
-  path: task_file/compile_gpdb.bash
+  path: gpdb_src/concourse/tmp/compile_gpdb.bash
 params:
   TARGET_OS: 
   TARGET_OS_VERSION:
