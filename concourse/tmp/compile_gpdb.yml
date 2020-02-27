@@ -3,11 +3,8 @@ image_resource:
   type: docker-image
 inputs:
   - name: gpdb_src
-  - name: libquicklz-installer
-  - name: libquicklz-devel-installer
     optional: true
   - name: python-tarball
-  - name: task_file
 outputs:
   - name: gpdb_artifacts
 run:
