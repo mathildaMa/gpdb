@@ -202,10 +202,10 @@ function _main() {
 
   case "${TARGET_OS}" in
     centos|ubuntu)
-#      prep_env
-#      fetch_orca_src "${ORCA_TAG}"
- #     build_xerces
- #     build_and_test_orca
+      prep_env
+      fetch_orca_src "${ORCA_TAG}"
+      build_xerces
+      build_and_test_orca
       link_python
       ;;
     win32)
