@@ -40,8 +40,8 @@ function prep_env() {
 }
 
 function link_python() {
- # tar xf python-tarball/python-*.tar.gz -C $(pwd)/${GPDB_SRC_PATH}/gpAux/ext
-  tar xf python-tarball -C $(pwd)/${GPDB_SRC_PATH}/gpAux/ext
+  tar xf python-tarball/python-*.tar.gz -C $(pwd)/${GPDB_SRC_PATH}/gpAux/ext
+ # tar xf python-tarball -C $(pwd)/${GPDB_SRC_PATH}/gpAux/ext
   ln -sf $(pwd)/${GPDB_SRC_PATH}/gpAux/ext/${BLD_ARCH}/python-2.7.12 /opt/python-2.7.12
 }
 
