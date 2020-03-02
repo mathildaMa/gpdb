@@ -127,7 +127,7 @@ endif
 
 aix7_ppc_64_CONFIGFLAGS=--disable-gpcloud --without-readline --without-libcurl --disable-orca --disable-pxf --without-zstd $(APR_CONFIG)
 rhel6_x86_64_CONFIGFLAGS=--with-quicklz --with-gssapi --enable-mapreduce --enable-orafce ${ORCA_CONFIG} --with-libxml
-rhel7_x86_64_CONFIGFLAGS=--with-quicklz --with-gssapi --enable-mapreduce --enable-orafce ${ORCA_CONFIG} --with-libxml
+rhel7_x86_64_CONFIGFLAGS= ${ORCA_CONFIG} --with-libxml
 linux_x86_64_CONFIGFLAGS=${ORCA_CONFIG} --with-libxml $(APR_CONFIG)
 ubuntu18.04_x86_64_CONFIGFLAGS=--with-quicklz --with-gssapi --enable-mapreduce --enable-orafce ${ORCA_CONFIG} --with-libxml
 
