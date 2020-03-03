@@ -16,10 +16,10 @@ resources:
 - name: gpdb_pr
   type: pull-request
   source:
-#    repository: mathildaMa/gpdb
-    uri: "https://gitee.com/fanwenchang/gpdb.git"
+    repository: mathildaMa/gpdb
+#    uri: "https://gitee.com/fanwenchang/gpdb.git"
     base_branch: "6X_STABLE_concourse"
-    access_token: "a0531b8b681edaadfb9cbf8a093ebbb6"
+    access_token: "317b2660a9b8044c117d4db08d42cf45f9e0115e"
     ignore_paths:
     - gpdb-doc/*
     - README*
@@ -85,7 +85,7 @@ jobs:
           - |
             git clone gpdb_pr gpdb_src &&
             cd gpdb_src &&
-            git fetch https://gitee.com/fanwenchang/gpdb.git --tags &&
+            git fetch https://github.com/mathildaMa/gpdb.git --tags &&
             git submodule update --init --recursive
         inputs: [{ name: gpdb_pr }]
         outputs: [{ name: gpdb_src }]
