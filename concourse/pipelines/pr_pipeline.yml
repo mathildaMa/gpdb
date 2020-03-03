@@ -7,18 +7,19 @@ resource_types:
   type: docker-image
   source:
     repository: teliaoss/github-pr-resource
-- name: gcs
+- name: http
   type: docker-image
   source:
-    repository: frodenas/gcs-resource
+    repository: aequitas/http-resource
 
 resources:
 - name: gpdb_pr
   type: pull-request
   source:
-    repository: greenplum-db/gpdb
+#    repository: mathildaMa/gpdb
+    uri: "https://gitee.com/fanwenchang/gpdb.git"
     base_branch: "6X_STABLE"
-    access_token: {{gpdb-git-access-token}}
+    access_token: "a0531b8b681edaadfb9cbf8a093ebbb6"
     ignore_paths:
     - gpdb-doc/*
     - README*
@@ -33,34 +34,12 @@ resources:
   source:
     repository: pivotaldata/gpdb6-centos7-test
 
-- name: libquicklz-centos7
-  type: gcs
-  source:
-    bucket: ((gcs-bucket))
-    json_key: ((concourse-gcs-resources-service-account-key))
-    regexp: gp-internal-artifacts/centos7/libquicklz-(1\.5\.0-.*)-1.el7.x86_64.rpm
-
-- name: libquicklz-devel-centos7
-  type: gcs
-  source:
-    bucket: ((gcs-bucket))
-    json_key: ((concourse-gcs-resources-service-account-key))
-    regexp: gp-internal-artifacts/centos7/libquicklz-devel-(1\.5\.0-.*)-1.el7.x86_64.rpm
-
-- name: libsigar-centos7
-  type: gcs
-  source:
-    bucket: ((gcs-bucket))
-    json_key: ((concourse-gcs-resources-service-account-key))
-    regexp: gp-internal-artifacts/centos7/sigar-rhel7_x86_64-(1\.6\.5-.*).targz
-
 - name: python-centos7
-  type: gcs
+  type: http
   source:
-    bucket: ((gcs-bucket))
-    json_key: ((concourse-gcs-resources-service-account-key))
-    regexp: gp-internal-artifacts/centos7/python-(2\.7\.12-.*).tar.gz
-
+    index: http://45.76.203.55:80
+    regex: 'python-(?P<version>[0-9\.-]*).tar.gz'
+    uri: 'http://45.76.203.55:80/python-{version}.tar.gz'
 
 jobs:
 - name: compile_and_test_gpdb
@@ -73,10 +52,6 @@ jobs:
       version: every
     - get: gpdb6-centos7-build
     - get: gpdb6-centos7-test
-    - get: libquicklz-installer
-      resource: libquicklz-centos7
-    - get: libquicklz-devel-installer
-      resource: libquicklz-devel-centos7
     - get: libsigar-installer
       resource: libsigar-centos7
     - get: python-tarball
@@ -110,7 +85,7 @@ jobs:
           - |
             git clone gpdb_pr gpdb_src &&
             cd gpdb_src &&
-            git fetch https://github.com/greenplum-db/gpdb.git --tags &&
+            git fetch https://gitee.com/fanwenchang/gpdb.git --tags &&
             git submodule update --init --recursive
         inputs: [{ name: gpdb_pr }]
         outputs: [{ name: gpdb_src }]
@@ -118,34 +93,9 @@ jobs:
       file: gpdb_pr/concourse/tasks/compile_gpdb.yml
       image: gpdb6-centos7-build
       params:
-        CONFIGURE_FLAGS: {{configure_flags_with_extensions}}
+        CONFIGURE_FLAGS: ""
         TARGET_OS: centos
         TARGET_OS_VERSION: 7
         BLD_TARGETS: "clients loaders"
       timeout: 30m
 
-
-    - aggregate:
-      - task: icw_planner_centos7
-        file: gpdb_pr/concourse/tasks/ic_gpdb.yml
-        image: gpdb6-centos7-test
-        input_mapping:
-          gpdb_src: gpdb_pr
-          bin_gpdb: gpdb_artifacts
-        params:
-          MAKE_TEST_COMMAND: PGOPTIONS='-c optimizer=off' installcheck-world
-          TEST_OS: centos
-          CONFIGURE_FLAGS: {{configure_flags}}
-        timeout: 3h
-
-      - task: icw_gporca_centos7
-        file: gpdb_pr/concourse/tasks/ic_gpdb.yml
-        image: gpdb6-centos7-test
-        input_mapping:
-          gpdb_src: gpdb_pr
-          bin_gpdb: gpdb_artifacts
-        params:
-          MAKE_TEST_COMMAND: PGOPTIONS='-c optimizer=on' installcheck-world
-          TEST_OS: centos
-          CONFIGURE_FLAGS: {{configure_flags}}
-        timeout: 5h

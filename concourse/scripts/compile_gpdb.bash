@@ -40,14 +40,14 @@ function prep_env() {
 }
 
 function install_deps_for_centos() {
-  rpm -i libquicklz-installer/libquicklz-*.rpm
-  rpm -i libquicklz-devel-installer/libquicklz-*.rpm
+ # rpm -i libquicklz-installer/libquicklz-*.rpm
+ # rpm -i libquicklz-devel-installer/libquicklz-*.rpm
   # install libsigar from tar.gz
   tar zxf libsigar-installer/sigar-*.targz -C gpdb_src/gpAux/ext
 }
 
 function install_deps_for_ubuntu() {
-  dpkg --install libquicklz-installer/libquicklz-*.deb
+  #dpkg --install libquicklz-installer/libquicklz-*.deb
 }
 
 function install_deps() {
@@ -271,7 +271,7 @@ function _main() {
       unittest_check_gpdb
   fi
   include_zstd
-  include_quicklz
+  # include_quicklz
   include_libstdcxx
   export_gpdb
   export_gpdb_extensions
