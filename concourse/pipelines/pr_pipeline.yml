@@ -57,10 +57,10 @@ jobs:
     - get: python-tarball
       resource: python-centos7
 
-  - put: gpdb_pr
-    params:
-      path: gpdb_pr
-      status: pending
+#  - put: gpdb_pr
+#    params:
+#      path: gpdb_pr
+#      status: pending
   - # "do" the remaining steps with these hooks:
     on_failure:
       put: gpdb_pr
@@ -94,8 +94,8 @@ jobs:
       image: gpdb6-centos7-build
       params:
         CONFIGURE_FLAGS: ""
-        TARGET_OS: centos
-        TARGET_OS_VERSION: 7
+        TARGET_OS: ubuntu
+        TARGET_OS_VERSION: 18.04 
         BLD_TARGETS: "clients loaders"
       timeout: 30m
 
