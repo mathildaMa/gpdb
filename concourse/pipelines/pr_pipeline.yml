@@ -18,7 +18,7 @@ resources:
   source:
 #    repository: mathildaMa/gpdb
     uri: "https://gitee.com/fanwenchang/gpdb.git"
-    base_branch: "6X_STABLE"
+    base_branch: "6X_STABLE_concourse"
     access_token: "a0531b8b681edaadfb9cbf8a093ebbb6"
     ignore_paths:
     - gpdb-doc/*
@@ -52,8 +52,8 @@ jobs:
       version: every
     - get: gpdb6-centos7-build
     - get: gpdb6-centos7-test
-    - get: libsigar-installer
-      resource: libsigar-centos7
+#    - get: libsigar-installer
+#      resource: libsigar-centos7
     - get: python-tarball
       resource: python-centos7
 
