@@ -237,7 +237,7 @@ function _main() {
       build_xerces
       build_and_test_orca
       #install_deps
-      link_python
+      #link_python
       ;;
     win32)
         export BLD_ARCH=win32
